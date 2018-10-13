@@ -11,7 +11,7 @@
     </el-row>
 
     <!-- 课程列表 -->
-    <el-table class="table_top" :data="courseListData" border style="width: 100%" row-style="height:100px" v-loading="loading">
+    <el-table class="margin_top" :data="courseListData" border style="width: 100%" row-style="height:100px" v-loading="loading">
       <el-table-column fixed="" prop="id" label="序号" width="80" align="center">
       </el-table-column>
       <el-table-column prop="courseName" label="课程名称" min-width="150px" align="center">
@@ -20,52 +20,121 @@
       </el-table-column>
       <el-table-column prop="duration" label="时长" min-width="100" align="center">
       </el-table-column>
-      <!-- todo 是否上架 -->
-      <el-table-column prop="isFree" label="是否上架" width="100" align="center">
-        <template slot-scope="scope">
-          <el-tag :type="scope.row.isFree === 0 ? 'primary' : 'success'" disable-transitions>
-            {{ scope.row.isFree == 0 ? '免费' : '收费' }}
-          </el-tag>
-        </template>
-      </el-table-column>
-      <!-- todo 是否推荐至首页轮播 -->
-      <el-table-column prop="isFree" label="是否推荐轮播" min-width="140" align="center">
-        <template slot-scope="scope">
-          <el-tag :type="scope.row.isFree === 0 ? 'primary' : 'success'" disable-transitions>
-            {{ scope.row.isFree == 0 ? '是' : '否' }}
-          </el-tag>
-        </template>
-      </el-table-column>
       <el-table-column prop="imgUrl" label="图片" width="200" align="center">
         <template slot-scope="scope">
           <img :src="scope.row.imgUrl" alt="" width="80%">
         </template>
       </el-table-column>
-      <el-table-column label="操作" fixed="right" align="center" width="240" class-name="small-padding fixed-width">
+      <!-- todo 是否上架 -->
+      <el-table-column prop="isFree" label="是否上架" min-width="120" align="center">
         <template slot-scope="scope">
-          <el-row>
-            <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-            <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-          </el-row>
-          <el-row class="opt_btn_margin">
-            <el-button size="mini" type="primary" @click="handlePublish(scope.$index, scope.row)">发布</el-button>
-            <el-button size="mini" type="success" @click="handleSendBanner(scope.$index, scope.row)">推荐轮播</el-button>
-          </el-row>
+          <el-switch style="display: block" v-model="scope.row.isPublish" active-color="#13ce66" inactive-color="#ff4949"
+            active-text="" inactive-text="" @change="handlePublish(scope.$index,scope.row)">
+          </el-switch>
+          <p></p>
+        </template>
+      </el-table-column>
+      <!-- todo 是否推荐至首页轮播 -->
+      <el-table-column prop="isFree" label="是否推荐轮播" min-width="140" align="center">
+        <template slot-scope="scope">
+          <el-switch style="display: block" v-model="scope.row.isBanner" active-color="#13ce66" inactive-color="#ff4949"
+            active-text="" inactive-text="" @change="handleSendBanner(scope.$index,scope.row)">
+          </el-switch>
+          <p></p>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" fixed="right" align="center" width="200" class-name="small-padding fixed-width">
+        <template slot-scope="scope">
+          <el-button size="mini" type="primary" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+          <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
-    <el-row type="flex" justify="end">
-      <el-pagination background layout="prev, pager, next" :total="100" page-size="20" @current-change="abc">
+
+    <!-- 分页 -->
+    <el-row type="flex" justify="center" class="margin_top">
+      <el-pagination background layout="prev, pager, next" :total="total" :page-size="size" @current-change="abc">
       </el-pagination>
     </el-row>
+
+    <!-- dialog -->
+    <el-dialog title="收货地址" :visible.sync="dialogFormVisible" modal="true">
+      <el-form ref="form" :model="form" label-width="80px">
+        <el-form-item label="活动名称">
+          <el-input v-model="form.name"></el-input>
+        </el-form-item>
+        <el-form-item label="活动区域">
+          <el-select v-model="form.region" placeholder="请选择活动区域">
+            <el-option label="区域一" value="shanghai"></el-option>
+            <el-option label="区域二" value="beijing"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="活动时间">
+          <el-col :span="11">
+            <el-date-picker type="date" placeholder="选择日期" v-model="form.date1" style="width: 100%;"></el-date-picker>
+          </el-col>
+          <el-col class="line" justify="center" :span="1" offset="1">-</el-col>
+          <el-col :span="11">
+            <el-time-picker type="fixed-time" placeholder="选择时间" v-model="form.date2" style="width: 100%;"></el-time-picker>
+          </el-col>
+        </el-form-item>
+        <el-form-item label="即时配送">
+          <el-switch v-model="form.delivery"></el-switch>
+        </el-form-item>
+        <el-form-item label="活动性质">
+          <el-checkbox-group v-model="form.type">
+            <el-checkbox label="美食/餐厅线上活动" name="type"></el-checkbox>
+            <el-checkbox label="地推活动" name="type"></el-checkbox>
+            <el-checkbox label="线下主题活动" name="type"></el-checkbox>
+            <el-checkbox label="单纯品牌曝光" name="type"></el-checkbox>
+          </el-checkbox-group>
+        </el-form-item>
+        <el-form-item label="特殊资源">
+          <el-radio-group v-model="form.resource">
+            <el-radio label="线上品牌商赞助"></el-radio>
+            <el-radio label="线下场地免费"></el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="活动形式">
+          <el-input type="textarea" v-model="form.desc"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="onSubmit">立即创建</el-button>
+          <el-button>取消</el-button>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+      </div>
+    </el-dialog>
 
   </div>
 </template>
 
 <script>
+  import {
+    getCourses
+  } from '@/api/courses'
+  
   export default {
     data() {
       return {
+        loading: false,
+        dialogFormVisible: false,
+        formLabelWidth: '120px',
+        form: {
+          name: '',
+          region: '',
+          date1: '',
+          date2: '',
+          delivery: false,
+          type: [],
+          resource: '',
+          desc: ''
+        },
+        total: 20,
+        size: 5,
         searchContent: '',
         courseListData: [{
             "id": 12,
@@ -77,6 +146,8 @@
             "imgUrl": "https://img2.sycdn.imooc.com/szimg/5b5835a60001907e05400300.jpg",
             "videoUrl": "http://pevcw8o7e.bkt.clouddn.com//ziwojieshao/ziwo.mp4",
             "isFree": 0,
+            "isPublish": true,
+            "isBanner": false,
             "price": 23,
             "count": 1
           },
@@ -90,6 +161,8 @@
             "imgUrl": "https://img3.mukewang.com/5b69142c0001d10705400300-240-135.jpg",
             "videoUrl": "http://pevcw8o7e.bkt.clouddn.com//video/Jass/testV.mp4",
             "isFree": 1,
+            "isPublish": false,
+            "isBanner": false,
             "price": 36,
             "count": 1
           },
@@ -103,6 +176,8 @@
             "imgUrl": "https://img2.mukewang.com/5b62867d0001d91106000338-240-135.jpg",
             "videoUrl": "http://pevcw8o7e.bkt.clouddn.com//video/Jass/testV.mp4",
             "isFree": 0,
+            "isPublish": true,
+            "isBanner": true,
             "price": 43,
             "count": 1
           }
@@ -113,18 +188,32 @@
       searchCourse() {
         // 点击课程搜索后
       },
-      handleEdit(index,rowData) {
+      fetchCourses() {
+        alert('开始请求');
+        this.loading = false;
+        getCourses().then(resp => {
+          alert(resp.data)
+          this.loading = false;
+        })
+      },
+      handleEdit(index, rowData) {
         // row 点击编辑
+        this.dialogFormVisible = true;
       },
-      handleDelete(index,rowData) {
+      handleDelete(index, rowData) {
         // row 点击删除
+        this.courseListData.splice(index, 1);
       },
-      handlePublish(index,rowData) {
+      handlePublish(index, rowData) {
         // row 点击发布
       },
-      handleSendBanner(index,rowData) {
+      handleSendBanner(index, rowData) {
         // row 点击推荐至轮播
       }
+    },
+    mounted() {
+      // 页面加载完成后
+      this.fetchCourses()
     }
   };
 
@@ -142,7 +231,7 @@
     padding: 0;
   }
 
-  .table_top {
+  .margin_top {
     margin-top: 20px;
   }
 
