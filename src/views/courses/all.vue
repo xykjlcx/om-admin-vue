@@ -114,8 +114,8 @@
 
 <script>
   import {
-    getCourses
-  } from '@/api/courses'
+    getAllCourse
+  } from '@/api/index'
   
   export default {
     data() {
@@ -191,8 +191,8 @@
       fetchCourses() {
         alert('开始请求');
         this.loading = false;
-        getCourses().then(resp => {
-          alert(resp.data)
+        getAllCourse().then(resp => {
+          alert(resp.data.content)
           this.loading = false;
         })
       },
