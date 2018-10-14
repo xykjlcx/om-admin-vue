@@ -2,7 +2,7 @@ import axios from 'axios'
 
 axios.defaults.timeout = 10000
 
-const base = "http://localhost:8088"
+const base = "http://localhost:8086"
 
 export default{
 	fetchPost(url, params) {

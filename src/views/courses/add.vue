@@ -14,8 +14,8 @@
               </el-row>
             </el-col>
             <el-col :span="20">
-              <el-button style="float: right;" type="primary" @click="addCourse">确定添加</el-button>
-
+              <!-- 确定添加课程按钮 -->
+              <el-button style="float: right;" type="primary" v-loading.fullscreen.lock="fullscreenLoading" @click="addCourse">确定添加</el-button>
             </el-col>
           </el-row>
         </div>
@@ -26,21 +26,19 @@
             <!-- 上传课程图片 -->
             <el-form-item label="课程图片">
               <!-- 视频图上传 -->
-              <el-upload class="upload-demo" action="http://127.0.0.1:8086/admin/main/upload" :on-preview="handlePreview"
-                :on-remove="handleRemove" :before-remove="beforeRemove" multiple :limit="3" :on-exceed="handleExceed"
-                :file-list="fileList" :on-success="uploadImgSuccess" name="file">
-                <img v-if="imageUrl" :src="imageUrl" width="100">
+              <el-upload class="upload-demo" action="http://127.0.0.1:8086/admin/main/upload" :on-success="uploadImgSuccess"
+                name="file">
+                <img v-if="this.form.previewImg" :src="this.form.previewImg" width="100">
                 <el-button plain>图片上传</el-button>
               </el-upload>
             </el-form-item>
 
             <!-- 上传课程视频 -->
             <el-form-item label="课程视频">
-              <!-- 视频图上传 -->
-              <el-upload class="upload-demo" action="http://127.0.0.1:8086/admin/main/upload" :on-preview="handlePreview"
-                :on-remove="handleRemove" :before-remove="beforeRemove" multiple :limit="3" :on-exceed="handleExceed"
-                :file-list="fileList" :on-success="uploadVideoSuccess" name="file">
-                <video v-if="videlUrl" :src="videlUrl" width="250"></video>
+              <!-- 视频上传 -->
+              <el-upload class="upload-demo" action="http://127.0.0.1:8086/admin/main/upload" :on-success="uploadVideoSuccess"
+                name="file">
+                <video v-if="this.form.videoUrl" :src="this.form.videoUrl" width="250"></video>
                 <el-button plain>视频上传</el-button>
               </el-upload>
             </el-form-item>
@@ -56,7 +54,7 @@
             </el-row>
 
             <!-- 分类 -->
-            <el-row gutter="60">
+            <el-row :gutter="60">
               <el-col :span="12">
                 <el-form-item label="一级分类">
                   <el-select v-model="currentOne" placeholder="请选择" class="full" @change="selectOne">
@@ -67,8 +65,9 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item label="二级分类">
-                  <el-select v-model="value" placeholder="请选择" class="full">
-                    <el-option v-for="item in classifyTwo[1]" :key="item.id" :label="item.classifyName" :value="item.id">
+                  <el-select v-model="currentTwo" placeholder="请选择" class="full" @change="selectTwo">
+                    <el-option v-for="item in classifyTwo[currentOne-1]" :key="item.id" :label="item.classifyName"
+                      :value="item.id">
                     </el-option>
                   </el-select>
                 </el-form-item>
@@ -76,10 +75,10 @@
             </el-row>
 
 
-            <el-row gutter="60">
+            <el-row :gutter="60">
               <el-col :span="24">
                 <el-form-item label="级别" required="">
-                  <el-select v-model="value" placeholder="请选择" class="full">
+                  <el-select v-model="form.level" placeholder="请选择" class="full">
                     <el-option v-for="item in courseLevel" :key="item.value" :label="item.label" :value="item.value">
                     </el-option>
                   </el-select>
@@ -87,17 +86,27 @@
               </el-col>
             </el-row>
 
-            <el-row gutter="60">
+
+            <el-row>
+              <el-col>
+                <el-form-item label="课程时长(分钟)" required="">
+                  <el-slider v-model="form.duration" show-input :max="200">
+                  </el-slider>
+                </el-form-item>
+              </el-col>
+            </el-row>
+
+            <el-row :gutter="60">
               <el-col :span="24">
                 <el-form-item label="是否免费">
-                  <el-radio-group v-model="form.isFree">
+                  <el-radio-group v-model="isFree">
                     <el-radio label="免费"></el-radio>
                     <el-radio label=收费></el-radio>
                   </el-radio-group>
                 </el-form-item>
               </el-col>
               <el-col :span="24">
-                <el-form-item label="价格" v-if="form.isFree == '免费' ? false : true">
+                <el-form-item label="价格" v-if="isFree == '免费' ? false : true">
                   <el-input v-model="form.price"></el-input>
                 </el-form-item>
               </el-col>
@@ -106,7 +115,7 @@
             <el-row>
               <el-col>
                 <el-form-item label="是否上架" required>
-                  <el-radio-group v-model="form.isPutWay">
+                  <el-radio-group v-model="isPutaway">
                     <el-radio-button label="上架"></el-radio-button>
                     <el-radio-button label="入库"></el-radio-button>
                   </el-radio-group>
@@ -134,9 +143,9 @@
         </div>
 
         <!-- card尾部 -->
-       <el-row type="flex" justify="center" class="bottomTips">
-         填写完毕后，<b>点击右上角的确定添加</b>，完成课程新增。
-       </el-row>
+        <el-row type="flex" justify="center" class="bottomTips">
+          填写完毕后，<b>点击右上角的确定添加</b>，完成课程新增。
+        </el-row>
 
       </el-card>
     </el-row>
@@ -146,22 +155,31 @@
 
 <script>
   import {
-    getAllClassify
+    getAllClassify,
   } from '@/api/index'
 
+  import {
+    addCourse,
+  } from '@/api/index'
   export default {
     data() {
       return {
+        fullscreenLoading: false,
         labelPosition: 'left',
-        imageUrl: '',
-        videlUrl: '',
+        isFree: '免费',
+        isPutaway: '上架',
         form: {
           courseName: '',
+          courseDesc: '',
+          classifyId: 0,
+          duration: '',
+          level: '',
+          previewImg: '',
+          videoUrl: '',
+          isPutaway: -1,
           weight: 0,
           price: 0,
-          courseDesc: '',
-          isPutWay: '',
-          isFree: '免费',
+          isFree: -1,
         },
         classifyOne: [],
         currentOne: '',
@@ -170,28 +188,19 @@
         ],
         currentTwo: '',
         courseLevel: [{
-            value: 1,
+            value: '初级',
             label: '初级'
           },
           {
-            value: 2,
-            label: '初级'
+            value: '中级',
+            label: '中级'
           },
           {
-            value: 3,
+            value: '高级',
             label: '高级'
           },
         ],
-        isFree: [{
-            value: 1,
-            label: '免费'
-          },
-          {
-            value: 1,
-            label: '收费'
-          },
-        ],
-        value: ''
+        value: 0
       }
     },
     mounted() {
@@ -199,11 +208,14 @@
     },
     methods: {
       selectOne(index) {
-        alert(index)
+        console.log("一级分类：" + index)
+      },
+      selectTwo(index) {
+        console.log("二级分类：" + index)
       },
       uploadVideoSuccess(resp) {
         if (resp.code == 0) {
-          this.videlUrl = resp.data;
+          this.form.videoUrl = resp.data;
           this.$message({
             message: '视频上传成功',
             type: 'success'
@@ -214,7 +226,7 @@
       },
       uploadImgSuccess(resp) {
         if (resp.code == 0) {
-          this.imageUrl = resp.data;
+          this.form.previewImg = resp.data;
           this.$message({
             message: '图片上传成功',
             type: 'success'
@@ -232,19 +244,85 @@
       },
       addCourse() {
         // 确定新增课程
-        if (this.imageUrl == '' || this.videlUrl == '') {
-          this.$message.error("请先上传图片和视频");
+        if (this.form.imageUrl == '' || this.form.videoUrl == '') {
+          this.$message.error("请完成课程预览图和视频的上传");
         } else {
-          this.$message({
-            message: '新增课程成功',
-            type: 'success'
-          });
-          // 添加完成后，跳转至所有课程页面
-          this.$router.push({
-            path: this.redirect || '/courses/all'
-          })
+          // 课程数据处理
+          // 获取分类id
+          var classifyId = 0;
+          if (this.currentOne == '') {
+            this.$message.error('请选择分类')
+            return;
+          } else {
+            if (this.currentTwo == '') {
+              // 没有选择二级分类
+              classifyId = this.classifyOne[this.currentOne - 1].dbId;
+            } else {
+              // 选择二级分类
+              classifyId = this.classifyTwo[this.currentOne - 1][this.currentTwo - 1].dbId;
+            }
+          }
+          console.log("您选择的分类id为：" + classifyId)
+          this.form.classifyId = classifyId;
+          // 处理是否上架
+          var isPutawayNum = -1;
+          if (this.isPutaway == '上架') {
+            isPutawayNum = 0;
+          } else if (this.isPutaway == '入库') {
+            isPutawayNum = 1;
+          } else {
+            console.log("判断是否上架失败");
+          }
+          this.form.isPutaway = isPutawayNum;
+          console.log("是否上架为：" + this.form.isPutaway)
+          // 处理是否免费和价格
+          var isFreeNum = -1;
+          var price = -1;
+          if (this.isFree == '免费') {
+            isFreeNum = 0;
+            price = 0; // 若免费，则默认价格为0
+          } else if (this.isFree == '收费') {
+            isFreeNum = 1;
+            price = this.form.price;
+          } else {
+            console.log("判断是否收费失败");
+          }
+          this.form.isFree = isFreeNum;
+          this.form.price = price;
+          console.log("是否收费为：" + this.form.isFree)
+
+          console.log("判断前打印：" + this.form)
+
+          if (this.form.courseName == '' ||
+            this.form.courseDesc == '' ||
+            this.form.classifyId == 0 ||
+            this.form.level == '' ||
+            this.form.duration == '' ||
+            this.form.isFree == -1 ||
+            this.form.isPutaway == -1) {
+            this.$message.error("请完整填写课程信息");
+            return;
+          } else {
+            this.fullscreenLoading = true;
+            addCourse(this.form).then(resp => {
+              this.fullscreenLoading = false;
+              if (resp.code == 0) {
+                this.$message({
+                  message: '新增课程成功',
+                  type: 'success'
+                });
+                // 添加完成后，跳转至所有课程页面
+                this.$router.push({
+                  path: this.redirect || '/courses/all'
+                })
+              } else {
+                this.$message.error(resp.msg);
+              }
+            });
+          }
+
         }
-      }
+      },
     }
   }
 
@@ -262,7 +340,7 @@
   }
 
   .box-card {
-    width: 85%;
+    width: 90%;
   }
 
   .clearfix:after {

@@ -51,3 +51,9 @@ export const getAllCourse = (params) => {
 export const getAllClassify = (params) => {
   return API.fetchGet('/admin/courses/getAllClassify', params)
 }
+
+// 获取课程分类
+export const addCourse = (params) => {
+  return API.fetchPost('/admin/courses/addCourse', params)
+}
+
