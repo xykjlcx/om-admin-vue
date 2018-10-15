@@ -32,7 +32,8 @@
 
           <!-- 课程列表 -->
           <el-table class="margin_top" :data="courseListData" border style="width: 100%" row-style="height:100px"
-            v-loading="loading" @sort-change="sortChange" :default-sort="{prop: 'createCourseTime', order: 'descending'}">
+            v-loading="loading" @sort-change="sortChange" :default-sort="{prop: 'createCourseTime', order: 'descending'}"
+            @row-click="rowClick">
             <el-table-column prop="id" label="序号" width="80" align="center">
             </el-table-column>
             <el-table-column prop="courseName" label="课程名称" min-width="100px" align="center">
@@ -91,14 +92,11 @@
     </el-row>
 
 
-    <!-- 测试部分 ，明日整合-->
-
-    <el-button @click="dialogVisible = true">点击打开</el-button>
-
-    <el-dialog title="视频播放" :visible.sync="dialogVisible" :before-close="handleClose">
+  
+    <el-dialog :title="this.dialogTitle" :visible.sync="dialogVisible" @closed="handleCloseForVideo">
       <el-row>
         <el-col :span="12" :offset="4">
-          <video class="radius" src="http://oceanbucket.oss-cn-beijing.aliyuncs.com/nfgn.mp4" controls="controls" width="400">
+          <video ref="myVideo" class="radius" :src="this.dialogVidelUrl" controls="controls" width="400">
           </video>
         </el-col>
       </el-row>
@@ -122,6 +120,8 @@
       return {
         // 测试，明日整合
         dialogVisible: false,
+        dialogTitle: '',
+        dialogVidelUrl: '',
         loading: false,
         dialogFormVisible: false,
         formLabelWidth: '120px',
@@ -285,6 +285,17 @@
             });
           }
         });
+      },
+      // dialog 关闭时的回调
+      handleCloseForVideo() {
+        var video = this.$refs.myVideo;
+        video.pause();
+      },
+      // 某一行被点击
+      rowClick(row, event, column) {
+        this.dialogTitle = row.courseName;
+        this.dialogVidelUrl = row.videoUrl;
+        this.dialogVisible = true;
       }
     },
     mounted() {
