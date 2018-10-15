@@ -90,26 +90,38 @@
       </el-card>
     </el-row>
 
+
+    <!-- 测试部分 ，明日整合-->
+
+    <el-button @click="dialogVisible = true">点击打开</el-button>
+
+    <el-dialog title="视频播放" :visible.sync="dialogVisible" :before-close="handleClose">
+      <el-row>
+        <el-col :span="12" :offset="4">
+          <video class="radius" src="http://oceanbucket.oss-cn-beijing.aliyuncs.com/nfgn.mp4" controls="controls" width="400">
+          </video>
+        </el-col>
+      </el-row>
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
   import {
-    getAllCourse
-  } from '@/api/index'
-
-  import {
-    searchCourses
-  } from '@/api/index'
-
-  import {
-    operateCourseIsBanner
+    getAllCourse,
+    searchCourses,
+    operateCourseIsBanner,
+    operateCourseIsPutAway,
+    deleteCourseItem
   } from '@/api/index'
 
 
   export default {
     data() {
       return {
+        // 测试，明日整合
+        dialogVisible: false,
         loading: false,
         dialogFormVisible: false,
         formLabelWidth: '120px',
@@ -190,18 +202,69 @@
       },
       handleEdit(index, rowData) {
         // row 点击编辑
-        this.dialogFormVisible = true;
+        // this.dialogFormVisible = true;
+        // this.$router.push({
+        //   name: 'edit',
+        //   params: {
+        //     id: rowData.dbId
+        //   }
+        // })
+        // 由以上方法改为此方法，原方法由于to、from都一样，只是参数不同，导致组件复用时/edit/:id的参数id不更新
+        this.$router.push({
+          path: '/courses/edit/'+rowData.dbId
+        })
       },
       handleDelete(index, rowData) {
         // row 点击删除
-        this.courseListData.splice(index, 1);
+        var params = {
+          courseId: rowData.dbId
+        };
+        this.$confirm('此操作将永久删除该课程, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.loading = true;
+          deleteCourseItem(params).then(resp => {
+            this.fetchCourses();
+          });
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
       },
       handlePutaway(index, rowData) {
         // row 点击发布
+        this.loading = true;
+        var params = {
+          courseId: rowData.dbId,
+          isPutAway: rowData.putawayS
+        };
+        operateCourseIsPutAway(params).then(resp => {
+          this.loading = false;
+          if (resp.code == 0) {
+            this.$message({
+              message: resp.msg,
+              type: 'success'
+            });
+          } else {
+            rowData.putawayS = resp.data;
+            this.$message({
+              message: resp.msg,
+              type: 'error'
+            });
+          }
+        });
       },
       handleSendBanner(index, rowData) {
         // row 点击是否推荐至轮播
-                // alert(rowData.homeBannerS)
+        // alert(rowData.homeBannerS)
         this.loading = true;
         var params = {
           courseId: rowData.dbId,
@@ -209,12 +272,12 @@
         };
         operateCourseIsBanner(params).then(resp => {
           this.loading = false;
-          if(resp.code == 0){
+          if (resp.code == 0) {
             this.$message({
               message: resp.msg,
               type: 'success'
             });
-          }else {
+          } else {
             rowData.homeBannerS = resp.data;
             this.$message({
               message: resp.msg,
@@ -225,7 +288,6 @@
       }
     },
     mounted() {
-      // 页面加载完成后
       this.fetchCourses()
     }
   };
@@ -258,6 +320,11 @@
 
   .radius {
     border-radius: 5px
+  }
+
+  .test {
+    padding: 0px;
+    margin: 0px;
   }
 
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <course-delegate :is-edit="false" />
+    <course-delegate :is-edit="true" />
   </div>
 </template>
 
@@ -8,7 +8,7 @@
   import CourseDelegate from './CourseDelegate.vue'
 
   export default {
-    name: 'CreateForm',
+    name: 'EditForm',
     components: {
       CourseDelegate
     }

@@ -11,8 +11,8 @@ export const getAllClassify = (params) => {
 }
 
 // 添加课程
-export const addCourse = (params) => {
-  return API.fetchPost('/admin/courses/addCourse', params)
+export const addAndEditCourse = (params) => {
+  return API.fetchPost('/admin/courses/addAndEditCourse', params)
 }
 
 // 课程搜索
@@ -23,4 +23,20 @@ export const searchCourses = (params) => {
 // 操作课程是否推荐至轮播
 export const operateCourseIsBanner = (params) => {
   return API.fetchPost('/admin/courses/operateCourseToBanner', params)
+}
+
+// 操作课程上架/下架
+export const operateCourseIsPutAway = (params) => {
+  return API.fetchPost('/admin/courses/operateCourseIsPutAway', params)
+}
+
+// 删除一条课程
+export const deleteCourseItem = (params) => {
+  return API.fetchPost('/admin/courses/deleteCourseItem', params)
+}
+
+
+// 获取某一条课程的信息
+export const getCourseOneById = (params) => {
+  return API.fetchPost('/admin/courses/getCourseOneById', params)
 }
