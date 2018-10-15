@@ -32,11 +32,14 @@
 
           <!-- 课程列表 -->
           <el-table class="margin_top" :data="courseListData" border style="width: 100%" row-style="height:100px"
-            v-loading="loading" @sort-change="sortChange" :default-sort="{prop: 'createCourseTime', order: 'descending'}"
-            @row-click="rowClick">
+            v-loading="loading" @sort-change="sortChange" :default-sort="{prop: 'createCourseTime', order: 'descending'}">
             <el-table-column prop="id" label="序号" width="80" align="center">
             </el-table-column>
             <el-table-column prop="courseName" label="课程名称" min-width="100px" align="center">
+              <template slot-scope="scope">
+                <p><a><b @click="rowClick(scope.$index,scope.row)" >{{  scope.row.courseName}}</b></a></p>
+                <p class="tips_text">点击课程名称播放视频</p>
+              </template>
             </el-table-column>
             <el-table-column prop="imgUrl" label="图片" width="200" align="center">
               <template slot-scope="scope">
@@ -60,6 +63,9 @@
               </template>
             </el-table-column>
             <el-table-column prop="studyCount" label="多少人在学" min-width="100" align="center">
+              <template slot-scope="scope">
+                <el-tag  :key="scope.row.studyCount">{{scope.row.studyCount}}</el-tag>
+              </template>
             </el-table-column>
             <el-table-column prop="createCourseTime" label="创建时间" min-width="120" align="center" sortable="custom">
             </el-table-column>
@@ -292,7 +298,7 @@
         video.pause();
       },
       // 某一行被点击
-      rowClick(row, event, column) {
+      rowClick(index,row) {
         this.dialogTitle = row.courseName;
         this.dialogVidelUrl = row.videoUrl;
         this.dialogVisible = true;
@@ -313,6 +319,11 @@
 
   .text {
     font-size: 30px;
+  }
+
+  .tips_text {
+    font-size: 2px;
+    color: yellowgreen;
   }
 
   .cell {
