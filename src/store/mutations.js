@@ -1,6 +1,7 @@
 import {
   GET_USERINFO,
-  RECORD_USERINFO
+  RECORD_USERINFO,
+  LOGIN_STATE
 } from './mutation-types'
 
 import {

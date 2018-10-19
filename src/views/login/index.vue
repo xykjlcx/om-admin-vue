@@ -45,6 +45,8 @@
     setStore
   } from '@/store/storage'
 
+// md5 加密
+import md5 from 'blueimp-md5'
 
   export default {
     name: 'Login',
@@ -65,8 +67,8 @@
       }
       return {
         loginForm: {
-          account: 'admin',
-          password: 'admin'
+          account: 'test',
+          password: ''
         },
         loginRules: {
           username: [{
@@ -102,13 +104,18 @@
         }
       },
       handleLogin() {
-        login(this.loginForm).then(resp => {
+        var params = {
+          account: this.loginForm.account,
+          password: md5(this.loginForm.password)
+        };
+        login(params).then(resp => {
            this.$message({
             message: '登录成功',
             type: 'success'
           })
           console.log(resp.code)
           setStore('token',resp.data.token);
+          setStore('userInfo',resp.data)
           this.$router.push({
             path: '/'
           })

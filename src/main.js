@@ -12,7 +12,7 @@ import App from './App'
 import router from './router'
 import store from './store'
 import {checkLogin} from '@/api/index'
-import {getStore} from '@/store/storage'
+import {setStore,getStore} from '@/store/storage'
 
 import '@/icons' // icon
 
@@ -22,23 +22,21 @@ Vue.config.productionTip = false
 
 
 
-const whiteList = ['/login']
 
 router.beforeEach((to, from, next) => {
-  let params = {
-    params: {
-      token: getStore('token')
-    }
-  }
+
+  var params = {
+    token: getStore('token')
+  };
+
+  const whiteList = ['/login']
 
   console.log("jass：" + "开始请求")
   checkLogin(params).then(res => {
     // 尚未登录
     console.log("jass：" + "开始判断" + res.code)
-    if (res.code !== 0) {
+    if (res.code != 0) {
       console.log("jass：" + "未登录")
-      //			console.log("res.user.id = " + res.user.id)
-      //			console.log("res.user.username = " + res.user.username)
       if (whiteList.indexOf(to.path) !== -1) {
         console.log('符合白名单')
         next()
@@ -49,17 +47,16 @@ router.beforeEach((to, from, next) => {
     } else {
       console.log("jass：" + "已登录")
       // 已登录
-      store.commit('RECORD_USERINFO', {
-        info: res.user
-      })
+      // store.commit('RECORD_USERINFO', {
+      //   info: res.data
+      // })
+      setStore('isLogin',res.code)
       if (to.fullPath === '/login') {
         console.log("jass：" + "已登录 => login page")
         next('/home')
       }
       next()
     }
-  }).catch(error => {
-    console.log("no have network")
   })
 })
 
