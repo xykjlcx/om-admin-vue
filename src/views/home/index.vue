@@ -8,7 +8,7 @@
           </div>
           <div class="card-panel-description">
             <div class="card-panel-text">学生总数</div>
-            <count-to :start-val="0" :end-val="102400" :duration="2600" class="card-panel-num" />
+            <span class="home-label-font">1000</span>
           </div>
         </div>
       </el-col>
@@ -19,7 +19,7 @@
           </div>
           <div class="card-panel-description">
             <div class="card-panel-text">最受欢迎的课程</div>
-            <count-to :start-val="0" :end-val="81212" :duration="3000" class="card-panel-num" />
+            <span class="home-label-font">AV</span>
           </div>
         </div>
       </el-col>
@@ -30,8 +30,7 @@
           </div>
           <div class="card-panel-description">
             <div class="card-panel-text">最新评论</div>
-            <!-- <count-to :start-val="0" :end-val="9280" :duration="3200" class="card-panel-num" /> -->
-            <b>JASS</b>
+            <span class="home-label-font">卧槽</span>
           </div>
         </div>
       </el-col>
@@ -150,6 +149,10 @@
         }
       }
     }
+  }
+
+  .home-label-font {
+    font-size: 25px;
   }
 
 </style>

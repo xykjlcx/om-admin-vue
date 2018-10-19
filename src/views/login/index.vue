@@ -7,7 +7,7 @@
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
-        <el-input v-model="loginForm.username" name="username" type="text" auto-complete="on" placeholder="username" />
+        <el-input v-model="loginForm.account" name="account" type="text" auto-complete="on" placeholder="username" />
       </el-form-item>
       <el-form-item prop="password">
         <span class="svg-container">
@@ -37,6 +37,15 @@
     isvalidUsername
   } from '@/utils/validate'
 
+  import {
+    login
+  } from '@/api/index'
+
+  import {
+    setStore
+  } from '@/store/storage'
+
+
   export default {
     name: 'Login',
     data() {
@@ -56,7 +65,7 @@
       }
       return {
         loginForm: {
-          username: 'admin',
+          account: 'admin',
           password: 'admin'
         },
         loginRules: {
@@ -93,22 +102,16 @@
         }
       },
       handleLogin() {
-        this.$refs.loginForm.validate(valid => {
-
-          if (valid) {
-            this.loading = true
-            this.$store.dispatch('Login', this.loginForm).then(() => {
-              this.loading = false
-              this.$router.push({
-                path: this.redirect || '/'
-              })
-            }).catch(() => {
-              this.loading = false
-            })
-          } else {
-            console.log('error submit!!')
-            return false
-          }
+        login(this.loginForm).then(resp => {
+           this.$message({
+            message: '登录成功',
+            type: 'success'
+          })
+          console.log(resp.code)
+          setStore('token',resp.data.token);
+          this.$router.push({
+            path: '/'
+          })
         })
       }
     }
