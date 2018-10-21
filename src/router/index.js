@@ -118,6 +118,11 @@ export const constantRouterMap = [{
   {
     path: '/sections',
     component: Layout,
+    redirect: '/sections/index',
+    meta: {
+      title: '章节管理',
+      icon: 'excel'
+    },
     children: [{
       path: 'index',
       name: 'Sections',
@@ -126,8 +131,20 @@ export const constantRouterMap = [{
       meta: {
         title: '章节管理',
         icon: 'excel'
-      }
-    }]
+      },
+    },
+    {
+      path: 'main',
+      component: () =>
+        import('@/views/sections/main'),
+      name: 'SectionsMain',
+      meta: {
+        title: '章节编辑',
+        noCache: true
+      },
+      hidden: true
+    },
+  ]
   },
   {
     path: '/classifys',

@@ -8,16 +8,17 @@
       </el-col>
       <el-col :span="8">
         <el-button type="primary" @click="searchCourse">搜索</el-button>
-      </el-col> 
+      </el-col>
       <el-col :span="8">
-        
+
       </el-col>
     </el-row>
 
     <!-- 表格体 -->
     <!-- 课程列表 -->
     <el-table class="margin_top" :data="courseData" style="width: 100%" row-style="height:100px" v-loading="tableLoading"
-      @sort-change="sortChange" :default-sort="{prop: 'createCourseTime', order: 'descending'}">
+      @sort-change="sortChange" :default-sort="{prop: 'createCourseTime', order: 'descending'}"
+      @row-click="courseItemClick">
       <el-table-column prop="id" label="序号" width="80" align="center">
       </el-table-column>
       <el-table-column prop="imgUrl" label="图片" width="200" align="center">
@@ -47,7 +48,8 @@
 
 <script>
   import {
-    getAllCourse
+    getAllCourse,
+    searchCourses
   } from '@/api/index'
 
   export default {
@@ -104,12 +106,50 @@
        */
       pageChanage(val) {
         this.pagination.currentPage = val;
+        this.fetchAllCourseData();
       },
       /**
        * 搜索课程
        */
       searchCourse() {
-        alert('搜索课程')
+        // 点击课程搜索后
+        if (this.searchContent == '') {
+          this.fetchAllCourseData()
+          return;
+        }
+        this.pagination.currentPage = 1
+        this.sort.type = 0
+        this.sort.Prop = 'none'
+        var params = {
+          page: this.pagination.currentPage - 1,
+          size: this.pagination.size,
+          sort: this.sort.type,
+          sortProp: this.sort.Prop,
+          courseName: this.searchContent
+        };
+        this.tableLoading = true
+        searchCourses(params).then(resp => {
+          this.tableLoading = false;
+          if (resp.code == 0) {
+            this.pagination.total = resp.data.count;
+            this.courseData = resp.data.courseList
+          } else {
+            this.$message({
+              message: resp.msg,
+              type: 'error'
+            })
+          }
+        });
+      },
+      /**
+       * 课程列表item被点击
+       */
+      courseItemClick(row, event, column) {
+        // 这里暂定直接跳转章节编辑页面
+        // 后期如果作为公用组件，抽象为跳转目标页面
+        this.$router.push({
+          path: '/sections/main'
+        })
       }
     }
   }

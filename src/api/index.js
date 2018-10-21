@@ -41,6 +41,11 @@ export const getCourseOneById = (params) => {
   return API.fetchPost('/courses/getCourseOneById', params)
 }
 
+// 获取课程章节
+export const getCourseChapterAndSection = (params) => {
+  return API.fetchPost('/courses/getCourseChapterAndSection', params)
+}
+
 // 登录
 export const login = (params) => {
   return API.fetchPost('/user/login', params)
