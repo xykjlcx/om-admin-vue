@@ -3,7 +3,7 @@
     <el-card>
       <div slot="header" class="clearfix">
         <span><b>{{ courseName }}</b>的课程章节</span>
-        <el-button style="float: right; padding: 3px 0" type="text">新增章节</el-button>
+        <el-button style="float: right; padding: 3px 0" type="text" @click="dialogVisible = true">新增章节</el-button>
       </div>
       <el-row :gutter="30">
         <el-col :span="10">
@@ -56,6 +56,44 @@
         </el-col>
       </el-row>
     </el-card>
+
+
+    <el-dialog title="添加新的章/节" :visible.sync="dialogVisible" width="50%" :before-close="handleClose" style="height:100%">
+      <el-row>
+        <el-form :label-position="top">
+          <el-form-item label="类型">
+            <el-select v-model="sectionForm.type" placeholder="请选择章/节" class="full-width">
+              <el-option label="Chapter(章)" value="chapter"></el-option>
+              <el-option label="Section(节)" value="section"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="所属章" v-if="sectionForm.type == 'section' ? true : false">
+            <el-select class="full-width" v-model="sectionForm.belongChapter" placeholder="请选择" v-if="sectionForm.type == 'section' ? true : false">
+              <el-option v-for="item in chapterList" :key="item.id" :label="item.sectionName" :value="item.id">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="名称">
+            <el-input v-model="sectionForm.name" class="full-width"></el-input>
+          </el-form-item>
+          <!-- 上传课程视频 -->
+          <el-form-item label="课程视频">
+            <!-- 视频上传 -->
+            <el-upload action="http://127.0.0.1:8086/admin/main/upload" :on-success="uploadVideoSuccess" name="file"
+              class="full-width">
+              <video class="full-width" v-if="sectionForm.videoUrl" :src="this.sectionForm.videoUrl" width="250"></video>
+              <el-button plain class="full-width">视频上传</el-button>
+            </el-upload>
+          </el-form-item>
+        </el-form>
+      </el-row>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="addChapterAndSection">确 定</el-button>
+      </span>
+    </el-dialog>
+
+
   </div>
 </template>
 
@@ -75,12 +113,40 @@
           []
         ],
         loadingSection: false,
+        dialogVisible: false,
+        sectionForm: {
+          type: 'chapter', // 默认为章
+          name: '',
+          parentId: 0,
+          belongChapter: '',
+          videoUrl: ''
+        }
       }
     },
     mounted() {
       this.fetchCourseChapterAndSection();
     },
     methods: {
+      /**
+       * 添加新的章节
+       */
+      addChapterAndSection() {
+        this.dialogVisible = false;
+      },
+      /**
+       * 上传章节视频
+       */
+      uploadVideoSuccess(resp) {
+        if (resp.code == 0) {
+          this.sectionForm.videoUrl = resp.data;
+          this.$message({
+            message: '视频上传成功',
+            type: 'success'
+          });
+        } else {
+          this.$message.error('视频上传失败');
+        }
+      },
       /**
        * 获取课程章节
        */
@@ -150,6 +216,10 @@
 
   .radius {
     border-radius: 5px
+  }
+
+  .full-width {
+    width: 100%;
   }
 
 </style>

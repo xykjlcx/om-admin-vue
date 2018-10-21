@@ -45,8 +45,8 @@
     setStore
   } from '@/store/storage'
 
-// md5 加密
-import md5 from 'blueimp-md5'
+  // md5 加密
+  import md5 from 'blueimp-md5'
 
   export default {
     name: 'Login',
@@ -59,8 +59,8 @@ import md5 from 'blueimp-md5'
         }
       }
       const validatePass = (rule, value, callback) => {
-        if (value.length < 5) {
-          callback(new Error('密码不能小于5位'))
+        if (value.length < 3) {
+          callback(new Error('密码不能小于3位'))
         } else {
           callback()
         }
@@ -109,16 +109,23 @@ import md5 from 'blueimp-md5'
           password: md5(this.loginForm.password)
         };
         login(params).then(resp => {
-           this.$message({
-            message: '登录成功',
-            type: 'success'
-          })
-          console.log(resp.code)
-          setStore('token',resp.data.token);
-          setStore('userInfo',resp.data)
-          this.$router.push({
-            path: '/'
-          })
+          if (resp.code == 0) {
+            this.$message({
+              message: '登录成功',
+              type: 'success'
+            });
+            console.log(resp.code)
+            setStore('token', resp.data.token);
+            setStore('userInfo', resp.data)
+            this.$router.push({
+              path: '/'
+            });
+          } else {
+            this.$message({
+              message: resp.msg,
+              type: 'error'
+            })
+          }
         })
       }
     }
