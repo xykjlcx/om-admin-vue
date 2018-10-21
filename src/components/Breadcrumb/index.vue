@@ -10,43 +10,49 @@
 </template>
 
 <script>
-import pathToRegexp from 'path-to-regexp'
+  import pathToRegexp from 'path-to-regexp'
 
-export default {
-  data() {
-    return {
-      levelList: null
-    }
-  },
-  watch: {
-    $route() {
-      this.getBreadcrumb()
-    }
-  },
-  created() {
-    this.getBreadcrumb()
-  },
-  methods: {
-    getBreadcrumb() {
-      const { params } = this.$route
-      let matched = this.$route.matched.filter(item => {
-        if (item.name) {
-          // To solve this problem https://github.com/PanJiaChen/vue-element-admin/issues/561
-          var toPath = pathToRegexp.compile(item.path)
-          item.path = toPath(params)
-          return true
-        }
-      })
-      const first = matched[0]
-      if (first && first.name !== 'dashboard') {
-        matched = [
-          { path: '/', meta: { title: '点击返回主页' }}
-          ].concat(matched)
+  export default {
+    data() {
+      return {
+        levelList: null
       }
-      this.levelList = matched
+    },
+    watch: {
+      $route() {
+        this.getBreadcrumb()
+      }
+    },
+    created() {
+      this.getBreadcrumb()
+    },
+    methods: {
+      getBreadcrumb() {
+        const {
+          params
+        } = this.$route
+        let matched = this.$route.matched.filter(item => {
+          if (item.name) {
+            // To solve this problem https://github.com/PanJiaChen/vue-element-admin/issues/561
+            var toPath = pathToRegexp.compile(item.path)
+            item.path = toPath(params)
+            return true
+          }
+        })
+        const first = matched[0]
+        if (first && first.name !== 'dashboard') {
+          matched = [{
+            path: '/',
+            meta: {
+              title: '点击返回主页'
+            }
+          }].concat(matched)
+        }
+        this.levelList = matched
+      }
     }
   }
-}
+
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
@@ -55,9 +61,11 @@ export default {
     font-size: 14px;
     line-height: 50px;
     margin-left: 10px;
+
     .no-redirect {
       color: #97a8be;
       cursor: text;
     }
   }
+
 </style>
