@@ -104,11 +104,13 @@
         }
       },
       handleLogin() {
+        this.loading = true;
         var params = {
           account: this.loginForm.account,
           password: md5(this.loginForm.password)
         };
         login(params).then(resp => {
+          this.loading = false;
           if (resp.code == 0) {
             this.$message({
               message: '登录成功',

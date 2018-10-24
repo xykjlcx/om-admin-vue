@@ -2,7 +2,7 @@ import axios from 'axios'
 
 axios.defaults.timeout = 10000
 
-const base = "http://127.0.0.1:8086/admin"
+const base = "http://139.199.212.202:8086/admin"
 
 export default{
 	fetchPost(url, params) {

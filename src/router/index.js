@@ -134,7 +134,7 @@ export const constantRouterMap = [{
       },
     },
     {
-      path: 'main',
+      path: 'main/:id',
       component: () =>
         import('@/views/sections/main'),
       name: 'SectionsMain',

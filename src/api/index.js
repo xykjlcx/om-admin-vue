@@ -46,6 +46,21 @@ export const getCourseChapterAndSection = (params) => {
   return API.fetchPost('/courses/getCourseChapterAndSection', params)
 }
 
+// 新增课程章节
+export const addChapterAndSection = (params) => {
+  return API.fetchPost('/courses/addChapterAndSection', params)
+}
+
+// 编辑课程章节
+export const editChapterAndSection = (params) => {
+  return API.fetchPost('/courses/editChapterAndSection', params)
+}
+
+// 删除课程章节
+export const deleteChapterAndSection = (params) => {
+  return API.fetchPost('/courses/deleteChapterAndSection', params)
+}
+
 // 登录
 export const login = (params) => {
   return API.fetchPost('/user/login', params)

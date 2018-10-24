@@ -56,7 +56,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       filename: 'index.html',
       template: 'index.html',
       inject: true,
-      favicon: resolve('omicon.ico'),
+      favicon: resolve('oceanmooc.ico'),
       title: 'oceanmooc'
     })
   ]

@@ -58,15 +58,23 @@
           token: getStore('token')
         };
         logout(params).then(resp => {
-          this.$message({
+          if(resp.code == 0){
+             this.$message({
             message: '退出登录成功',
             type: 'success'
           })
           removeStore('userinfo');
           removeStore('token');
+          removeStore('isLogin');
           this.$router.push({
             path: '/login'
           })
+          }else {
+             this.$message({
+            message: '退出登录失败',
+            type: 'error'
+          })
+          }
         })
       }
     }

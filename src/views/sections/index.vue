@@ -7,7 +7,7 @@
           <el-row>
             <el-col :span="20">
               <el-row type="flex" align="middle">
-                <span class="text" style="float: left;margin:3px"><b>章节管理</b></span>
+                <!-- <span class="text" style="float: left;margin:3px"><b>章节管理</b></span> -->
                 <span> ( 点击课程列表项，进入<b>章节编辑</b>,😘 ) </span>
               </el-row>
             </el-col>
@@ -28,7 +28,7 @@
 
 
 <script>
-  import CourseList from '@/components/CourseList';
+  import CourseList from './CourseList/index.vue'
 
   export default {
     name: 'Section',

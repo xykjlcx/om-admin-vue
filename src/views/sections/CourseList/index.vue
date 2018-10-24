@@ -148,7 +148,7 @@
         // 这里暂定直接跳转章节编辑页面
         // 后期如果作为公用组件，抽象为跳转目标页面
         this.$router.push({
-          path: '/sections/main'
+          path: '/sections/main/' + row.dbId + '?courseName=' + row.courseName
         })
       }
     }

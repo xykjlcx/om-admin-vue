@@ -54,7 +54,7 @@ const webpackConfig = merge(baseWebpackConfig, {
       filename: config.build.index,
       template: 'index.html',
       inject: true,
-      favicon: resolve('omicom.ico'),
+      favicon: resolve('oceanmooc.ico'),
       title: 'oceanmooc',
       minify: {
         removeComments: true,
