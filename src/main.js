@@ -16,6 +16,12 @@ import {setStore,getStore} from '@/store/storage'
 
 import '@/icons' // icon
 
+// import $ from 'jquery';
+
+// window.jQuery = $;
+// window.$ = $;
+
+
 Vue.use(ElementUI, { locale })
 
 Vue.config.productionTip = false

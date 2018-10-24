@@ -1,8 +1,8 @@
 <template>
-  <div class="login-container">
-    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on"
+  <div id="particles" class="login-container">
+    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form intro" auto-complete="on"
       label-position="left">
-      <h3 class="title">Ocean Mooc</h3>
+      <h3 class="title">Welcome To OceanMooc</h3>
       <el-form-item prop="username">
         <span class="svg-container">
           <svg-icon icon-class="user" />
@@ -25,8 +25,8 @@
         </el-button>
       </el-form-item>
       <div class="tips">
-        <span style="margin-right:20px;">账户: admin</span>
-        <span> 密码: admin</span>
+        <span style="margin-right:20px;">账户: test</span>
+        <span> 密码: 123456</span>
       </div>
     </el-form>
   </div>
@@ -47,6 +47,10 @@
 
   // md5 加密
   import md5 from 'blueimp-md5'
+
+  import $ from 'jquery'
+
+  import particleground from '../../../static/js/jquery.particleground.min.js'
 
   export default {
     name: 'Login',
@@ -95,6 +99,15 @@
         immediate: true
       }
     },
+    mounted() {
+      $('#particles').particleground({
+        dotColor: '#5cbdaa',
+        lineColor: '#5cbdaa'
+      });
+      $('.intro').css({
+        'margin-top': -($('.intro').height() / 2)
+      });
+    },
     methods: {
       showPwd() {
         if (this.pwdType === 'password') {
@@ -104,6 +117,14 @@
         }
       },
       handleLogin() {
+        if (this.loginForm.account == '' ||
+          this.loginForm.password == '') {
+          this.$message({
+            message: '请输入账号密码！',
+            type: 'error'
+          });
+          return;
+        }
         this.loading = true;
         var params = {
           account: this.loginForm.account,
@@ -152,7 +173,8 @@
         -webkit-appearance: none;
         border-radius: 0px;
         padding: 12px 5px 12px 15px;
-        color: $light_gray;
+        // color: $light_gray;
+        color: #2d3a4b;
         height: 47px;
 
         &:-webkit-autofill {
@@ -181,7 +203,9 @@
     position: fixed;
     height: 100%;
     width: 100%;
-    background-color: $bg;
+    // background-color: $bg;
+    background-color: #fff;
+    // background-image: linear-gradient(to bottom right, #736EFE 0%, #5EFCE8 100%);
 
     .login-form {
       position: absolute;
@@ -216,7 +240,8 @@
     .title {
       font-size: 26px;
       font-weight: 400;
-      color: $light_gray;
+      // color: $light_gray;
+      color: '#2d3a4b';
       margin: 0px auto 40px auto;
       text-align: center;
       font-weight: bold;
@@ -231,6 +256,25 @@
       cursor: pointer;
       user-select: none;
     }
+  }
+
+</style>
+
+<style>
+  #particles {
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .intro {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    padding: 0 20px;
+    width: 100%;
+    z-index: 1;
+    text-align: center;
   }
 
 </style>

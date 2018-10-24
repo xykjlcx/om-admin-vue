@@ -5,6 +5,9 @@ const config = require('../config')
 const { VueLoaderPlugin } = require('vue-loader')
 const vueLoaderConfig = require('./vue-loader.conf')
 
+var webpack = require('webpack')
+
+
 function resolve(dir) {
   return path.join(__dirname, '..', dir)
 }
@@ -36,7 +39,9 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.vue', '.json'],
     alias: {
-      '@': resolve('src')
+      '@': resolve('src'),
+       // 如果使用NPM安装的jQuery
+       'jquery': 'jquery' 
     }
   },
   module: {
@@ -91,7 +96,10 @@ module.exports = {
       }
     ]
   },
-  plugins: [new VueLoaderPlugin()],
+  plugins: [new VueLoaderPlugin(),new webpack.ProvidePlugin({
+    $: "jquery",
+    jQuery: "jquery"
+  })],
   node: {
     // prevent webpack from injecting useless setImmediate polyfill because Vue
     // source contains it (although only uses it if it's native).

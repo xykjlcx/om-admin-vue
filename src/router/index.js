@@ -203,6 +203,20 @@ export const constantRouterMap = [{
     }]
   },
   {
+    path: '/login',
+    component: Layout,
+    children: [{
+      path: 'test',
+      name: 'test',
+      component: () =>
+        import('@/views/login/test'),
+      meta: {
+        title: '测试',
+        icon: 'user'
+      }
+    }]
+  },
+  {
     path: '*',
     redirect: '/404',
     hidden: true
