@@ -43,7 +43,7 @@
             </el-table-column>
             <el-table-column prop="imgUrl" label="图片" width="200" align="center">
               <template slot-scope="scope">
-                <img class="radius" :src="scope.row.previewImg" alt="" width="70%">
+                <img class="radius" :src="scope.row.previewImg + '?x-oss-process=style/jiancai'" alt="" width="70%">
               </template>
             </el-table-column>
             <el-table-column prop="isPutaway" label="是否上架" min-width="100" align="center">

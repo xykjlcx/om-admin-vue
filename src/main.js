@@ -16,10 +16,11 @@ import {setStore,getStore} from '@/store/storage'
 
 import '@/icons' // icon
 
-// import $ from 'jquery';
+// 引入echarts
+import echarts from 'echarts'
 
-// window.jQuery = $;
-// window.$ = $;
+Vue.prototype.$echarts = echarts 
+
 
 
 Vue.use(ElementUI, { locale })

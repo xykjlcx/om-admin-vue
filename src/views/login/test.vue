@@ -2,13 +2,17 @@
 
   <div id="particles">
 
-    <div class="intro">
+    <!-- <div class="intro">
 
       <h1>欢迎使用OceanMooc</h1>
 
       <p>在这里</p>
 
-    </div>
+    </div> -->
+    <canvas id="canvas-basic"></canvas>
+
+    <div id="myChart" :style="{width: '100%', height: '100%'}"></div>
+
 
   </div>
 
@@ -19,19 +23,63 @@
 
   import particleground from '../../../static/js/jquery.particleground.min.js'
 
+  import granim from '../../../static/js/granim.min.js'
+
+
   export default {
     data() {
       return {
-
+        chartData: {
+          title: {
+            text: '在Vue中使用echarts'
+          },
+          tooltip: {},
+          xAxis: {
+            data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"]
+          },
+          yAxis: {},
+          series: [{
+            name: '销量',
+            type: 'bar',
+            data: [5, 20, 36, 10, 10, 20]
+          }]
+        }
+      }
+    },
+    methods: {
+      drawLine() {
+        // 基于准备好的dom，初始化echarts实例
+        let myChart = this.$echarts.init(document.getElementById('myChart'))
+        // 绘制图表
+        myChart.setOption(this.chartData);
       }
     },
     mounted() {
-      $('#particles').particleground({
-        dotColor: '#5cbdaa',
-        lineColor: '#5cbdaa'
-      });
-      $('.intro').css({
-        'margin-top': -($('.intro').height() / 2)
+      // $('#particles').particleground({
+      //   dotColor: '#5cbdaa',
+      //   lineColor: '#5cbdaa'
+      // });
+      // $('.intro').css({
+      //   'margin-top': -($('.intro').height() / 2)
+      // });
+
+      this.drawLine();
+
+      var granimInstance = new Granim({
+        element: '#canvas-basic',
+        name: 'basic-gradient',
+        direction: 'left-right', // 'diagonal', 'top-bottom', 'radial'
+        opacity: [1, 1],
+        isPausedWhenNotInView: true,
+        states: {
+          "default-state": {
+            gradients: [
+              ['#AA076B', '#61045F'],
+              ['#02AAB0', '#00CDAC'],
+              ['#DA22FF', '#9733EE']
+            ]
+          }
+        }
       });
     }
   }
@@ -304,5 +352,16 @@ http://meyerweb.com/eric/tools/css/reset/
       height: 4px;
     }
   } */
+
+  #canvas-basic {
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
 
 </style>

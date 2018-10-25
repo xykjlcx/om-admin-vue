@@ -1,5 +1,6 @@
 <template>
   <div id="particles" class="login-container">
+    <canvas id="canvas-basic"></canvas>
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form intro" auto-complete="on"
       label-position="left">
       <h3 class="title">Welcome To OceanMooc</h3>
@@ -50,7 +51,10 @@
 
   import $ from 'jquery'
 
-  import particleground from '../../../static/js/jquery.particleground.min.js'
+  // 鼠标跟随背景效果
+  // import particleground from '../../../static/js/jquery.particleground.min.js'
+
+  import granim from '../../../static/js/granim.min.js'
 
   export default {
     name: 'Login',
@@ -100,12 +104,28 @@
       }
     },
     mounted() {
-      $('#particles').particleground({
-        dotColor: '#5cbdaa',
-        lineColor: '#5cbdaa'
-      });
-      $('.intro').css({
-        'margin-top': -($('.intro').height() / 2)
+      // $('#particles').particleground({
+      //   dotColor: '#5cbdaa',
+      //   lineColor: '#5cbdaa'
+      // });
+      // $('.intro').css({
+      //   'margin-top': -($('.intro').height() / 2)
+      // });
+      var granimInstance = new Granim({
+        element: '#canvas-basic',
+        name: 'basic-gradient',
+        direction: 'left-right', // 'diagonal', 'top-bottom', 'radial'
+        opacity: [1, 1],
+        isPausedWhenNotInView: true,
+        states: {
+          "default-state": {
+            gradients: [
+              ['#AA076B', '#61045F'],
+              ['#02AAB0', '#00CDAC'],
+              ['#DA22FF', '#9733EE']
+            ]
+          }
+        }
       });
     },
     methods: {
@@ -240,8 +260,8 @@
     .title {
       font-size: 26px;
       font-weight: 400;
-      // color: $light_gray;
-      color: '#2d3a4b';
+      color: $light_gray;
+      // color: '#2d3a4b';
       margin: 0px auto 40px auto;
       text-align: center;
       font-weight: bold;
@@ -261,7 +281,7 @@
 </style>
 
 <style>
-  #particles {
+  /* #particles {
     width: 100%;
     height: 100vh;
     overflow: hidden;
@@ -275,6 +295,17 @@
     width: 100%;
     z-index: 1;
     text-align: center;
+  } */
+
+  #canvas-basic {
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
   }
 
 </style>

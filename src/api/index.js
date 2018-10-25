@@ -61,6 +61,22 @@ export const deleteChapterAndSection = (params) => {
   return API.fetchPost('/courses/deleteChapterAndSection', params)
 }
 
+// 获取用户列表
+export const getAllUserInfo = (params) => {
+  return API.fetchPost('/user/getAllUserInfo', params)
+}
+
+// 删除某个用户
+export const deleteUser = (params) => {
+  return API.fetchPost('/user/deleteUser', params)
+}
+
+
+// 操作改变用户状态
+export const operateUserStatus = (params) => {
+  return API.fetchPost('/user/operateUserStatus', params)
+}
+
 // 登录
 export const login = (params) => {
   return API.fetchPost('/user/login', params)

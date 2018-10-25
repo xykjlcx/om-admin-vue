@@ -203,7 +203,7 @@ export const constantRouterMap = [{
     }]
   },
   {
-    path: '/login',
+    path: '/test',
     component: Layout,
     children: [{
       path: 'test',
