@@ -61,20 +61,6 @@ export const constantRouterMap = [{
     }]
   },
   {
-    path: '/users',
-    component: Layout,
-    children: [{
-      path: 'index',
-      name: 'Users',
-      component: () =>
-        import('@/views/users/index'),
-      meta: {
-        title: '用户管理',
-        icon: 'people'
-      }
-    }]
-  },
-  {
     path: '/courses',
     component: Layout,
     redirect: '/courses/all',
@@ -116,6 +102,34 @@ export const constantRouterMap = [{
     ]
   },
   {
+    path: '/users',
+    component: Layout,
+    children: [{
+      path: 'index',
+      name: 'Users',
+      component: () =>
+        import('@/views/users/index'),
+      meta: {
+        title: '用户管理',
+        icon: 'people'
+      }
+    }]
+  },
+  {
+    path: '/classifys',
+    component: Layout,
+    children: [{
+      path: 'index',
+      name: 'Classify',
+      component: () =>
+        import('@/views/classifys/index'),
+      meta: {
+        title: '分类管理',
+        icon: 'tree'
+      }
+    }]
+  },
+  {
     path: '/sections',
     component: Layout,
     redirect: '/sections/index',
@@ -146,20 +160,7 @@ export const constantRouterMap = [{
     },
   ]
   },
-  {
-    path: '/classifys',
-    component: Layout,
-    children: [{
-      path: 'index',
-      name: 'Classify',
-      component: () =>
-        import('@/views/classifys/index'),
-      meta: {
-        title: '分类管理',
-        icon: 'tree'
-      }
-    }]
-  },
+  
   {
     path: '/comments',
     component: Layout,
@@ -174,48 +175,48 @@ export const constantRouterMap = [{
       }
     }]
   },
-  {
-    path: '/notices',
-    component: Layout,
-    children: [{
-      path: 'index',
-      name: 'Notices',
-      component: () =>
-        import('@/views/notices/index'),
-      meta: {
-        title: '公告管理',
-        icon: 'guide'
-      }
-    }]
-  },
-  {
-    path: '/about',
-    component: Layout,
-    children: [{
-      path: 'index',
-      name: 'About',
-      component: () =>
-        import('@/views/about/index'),
-      meta: {
-        title: '关于我们',
-        icon: 'user'
-      }
-    }]
-  },
-  {
-    path: '/test',
-    component: Layout,
-    children: [{
-      path: 'test',
-      name: 'test',
-      component: () =>
-        import('@/views/login/test'),
-      meta: {
-        title: '测试',
-        icon: 'user'
-      }
-    }]
-  },
+  // {
+  //   path: '/notices',
+  //   component: Layout,
+  //   children: [{
+  //     path: 'index',
+  //     name: 'Notices',
+  //     component: () =>
+  //       import('@/views/notices/index'),
+  //     meta: {
+  //       title: '公告管理',
+  //       icon: 'guide'
+  //     }
+  //   }]
+  // },
+  // {
+  //   path: '/about',
+  //   component: Layout,
+  //   children: [{
+  //     path: 'index',
+  //     name: 'About',
+  //     component: () =>
+  //       import('@/views/about/index'),
+  //     meta: {
+  //       title: '关于我们',
+  //       icon: 'user'
+  //     }
+  //   }]
+  // },
+  // {
+  //   path: '/test',
+  //   component: Layout,
+  //   children: [{
+  //     path: 'test',
+  //     name: 'test',
+  //     component: () =>
+  //       import('@/views/login/test'),
+  //     meta: {
+  //       title: '测试',
+  //       icon: 'user'
+  //     }
+  //   }]
+  // },
   {
     path: '*',
     redirect: '/404',

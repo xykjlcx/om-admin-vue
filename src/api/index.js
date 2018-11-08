@@ -10,6 +10,16 @@ export const getAllClassify = (params) => {
   return API.fetchGet('/courses/getAllClassify', params)
 }
 
+// 获取课程分类（树形结构）
+export const getAllClassifyTree = (params) => {
+  return API.fetchGet('/courses/getAllClassifyTree', params)
+}
+
+// 添加或修改分类（树形结构）
+export const addAndEditClassify = (params) => {
+  return API.fetchPost('/courses/addAndEditClassify', params)
+}
+
 // 添加课程
 export const addAndEditCourse = (params) => {
   return API.fetchPost('/courses/addAndEditCourse', params)

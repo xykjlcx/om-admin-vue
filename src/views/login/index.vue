@@ -193,8 +193,8 @@
         -webkit-appearance: none;
         border-radius: 0px;
         padding: 12px 5px 12px 15px;
-        // color: $light_gray;
-        color: #2d3a4b;
+        color: $light_gray;
+        // color: #2d3a4b;
         height: 47px;
 
         &:-webkit-autofill {
@@ -251,7 +251,8 @@
 
     .svg-container {
       padding: 6px 5px 6px 15px;
-      color: $dark_gray;
+      // color: $dark_gray;
+      color: $light_gray;
       vertical-align: middle;
       width: 30px;
       display: inline-block;
@@ -261,7 +262,7 @@
       font-size: 26px;
       font-weight: 400;
       color: $light_gray;
-      // color: '#2d3a4b';
+      // color: '#ffffff';
       margin: 0px auto 40px auto;
       text-align: center;
       font-weight: bold;

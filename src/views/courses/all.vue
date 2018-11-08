@@ -25,8 +25,18 @@
             <el-col :span="8">
               <el-input v-model="searchContent" placeholder="请输入内容" @keyup.enter.native="searchCourse"></el-input>
             </el-col>
-            <el-col :span="12">
+            <el-col :span="2">
               <el-button type="primary" @click="searchCourse">搜索</el-button>
+            </el-col>
+            <el-col :span="8">
+              <el-select v-model="form.region" placeholder="请选择一级分类">
+                <el-option label="前端" value="shanghai"></el-option>
+                <el-option label="后端" value="beijing"></el-option>
+              </el-select>
+              <el-select v-model="form.region" placeholder="请选择二级分类">
+                <el-option label="HTML/CSS" value="shanghai"></el-option>
+                <el-option label="Vue.js" value="beijing"></el-option>
+              </el-select>
             </el-col>
           </el-row>
 
@@ -37,7 +47,7 @@
             </el-table-column>
             <el-table-column prop="courseName" label="课程名称" min-width="100px" align="center">
               <template slot-scope="scope">
-                <p><a><b @click="rowClick(scope.$index,scope.row)" >{{  scope.row.courseName}}</b></a></p>
+                <p><a><b @click="rowClick(scope.$index,scope.row)">{{ scope.row.courseName}}</b></a></p>
                 <p class="tips_text">点击课程名称播放视频</p>
               </template>
             </el-table-column>
@@ -64,7 +74,7 @@
             </el-table-column>
             <el-table-column prop="studyCount" label="多少人在学" min-width="100" align="center">
               <template slot-scope="scope">
-                <el-tag  :key="scope.row.studyCount">{{scope.row.studyCount}}</el-tag>
+                <el-tag :key="scope.row.studyCount">{{scope.row.studyCount}}</el-tag>
               </template>
             </el-table-column>
             <el-table-column prop="createCourseTime" label="创建时间" min-width="120" align="center" sortable="custom">
@@ -98,7 +108,7 @@
     </el-row>
 
 
-  
+
     <el-dialog :title="this.dialogTitle" :visible.sync="dialogVisible" @closed="handleCloseForVideo">
       <el-row>
         <el-col :span="12" :offset="4">
@@ -217,7 +227,7 @@
         // })
         // 由以上方法改为此方法，原方法由于to、from都一样，只是参数不同，导致组件复用时/edit/:id的参数id不更新
         this.$router.push({
-          path: '/courses/edit/'+rowData.dbId
+          path: '/courses/edit/' + rowData.dbId
         })
       },
       handleDelete(index, rowData) {
@@ -298,7 +308,7 @@
         video.pause();
       },
       // 某一行被点击
-      rowClick(index,row) {
+      rowClick(index, row) {
         this.dialogTitle = row.courseName;
         this.dialogVidelUrl = row.videoUrl;
         this.dialogVisible = true;

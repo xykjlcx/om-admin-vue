@@ -1,0 +1,40 @@
+.
+├── LICENSE
+├── README-zh.md
+├── README.md
+├── build
+│   ├── build.js
+│   ├── check-versions.js
+│   ├── logo.png
+│   ├── utils.js
+│   ├── vue-loader.conf.js
+│   ├── webpack.base.conf.js
+│   ├── webpack.dev.conf.js
+│   └── webpack.prod.conf.js
+├── config
+│   ├── dev.env.js
+│   ├── index.js
+│   └── prod.env.js├── dist
+├── favicon.ico
+├── index.html
+├── node_modules
+├── oceanmooc.ico
+├── package-lock.json
+├── package.json
+├── src
+│   ├── App.vue
+│   ├── api
+│   ├── assets
+│   ├── components
+│   ├── icons
+│   ├── main.js
+│   ├── router
+│   ├── store
+│   ├── styles
+│   ├── utils
+│   └── views
+├── static
+│   └── js
+└── zong.txt
+
+6 directories, 9 files
