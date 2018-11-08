@@ -69,7 +69,6 @@
             </el-pagination>
           </el-row>
 
-
         </div>
 
       </el-card>

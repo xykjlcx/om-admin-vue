@@ -5,7 +5,7 @@
         <span><b class="text">分类管理</b></span>
       </div>
       <el-row :gutter="30">
-        <el-col :span="7">
+        <el-col :span="12">
           <!-- <div class="classify-height"> -->
           <el-button type="primary" style="width:100%" @click="addNewClassifyOnClick">添加新分类</el-button>
           <el-scrollbar style="height:500px">
@@ -14,7 +14,7 @@
           </el-scrollbar>
           <!-- </div> -->
         </el-col>
-        <el-col :span="11">
+        <el-col :span="12">
           <el-card>
             <div class="classify-height">
               <el-form label-position="top" label-width="80px">
@@ -31,7 +31,7 @@
                 <el-form-item label="操作">
                   <el-button type="success" style="width:100%" @click="addAndSaveClassifyOnClick">{{ btnName }}</el-button>
                 </el-form-item>
-                <el-button type="danger" style="width:100%" v-if="isEdit">删除分类</el-button>
+                <el-button type="danger" style="width:100%" v-if="isEdit" @click="openConfirm">删除分类</el-button>
               </el-form>
             </div>
           </el-card>
@@ -44,7 +44,8 @@
 <script>
   import {
     getAllClassifyTree,
-    addAndEditClassify
+    addAndEditClassify,
+    deleteClassify
   } from '@/api/index'
 
   export default {
@@ -149,9 +150,8 @@
           this.loading = false;
           var type = 'success';
           if (resp.code == 0) {
-            this.classifyData = resp.data;
-            this.classifyData = resp.data;
             type = 'success';
+            this.classifyData = resp.data;
             this.classifyDataEcType = resp.data.concat();
             this.classifyDataEcType.unshift({
               classifyName: '一级分类',
@@ -164,6 +164,54 @@
             message: resp.msg,
             type: 'success'
           });
+        });
+      },
+      /**
+       * 点击删除按钮，弹出确认删除提示
+       */
+      openConfirm(index, row) {
+        this.$confirm('删除该分类也将删除其下的所有课程数据, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          // 确定删除
+          this.requestDeleteClassify();
+        }).catch(() => {
+          // 取消删除
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
+      },
+      /**
+       * 删除分类
+       */
+      requestDeleteClassify() {
+        var params = {
+          delId: this.editCurrentDbId
+        };
+        this.loading = true;
+        deleteClassify(params).then(resp => {
+          this.loading = false;
+          if (resp.code == 0) {
+            this.classifyData = resp.data;
+            this.classifyDataEcType = resp.data.concat();
+            this.classifyDataEcType.unshift({
+              classifyName: '一级分类',
+              dbId: 0
+            });
+            this.$message({
+              type: 'success',
+              message: '删除成功'
+            });
+          } else {
+            this.$message({
+              type: 'success',
+              message: resp.msg
+            });
+          }
         });
       }
     }

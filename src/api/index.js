@@ -20,6 +20,11 @@ export const addAndEditClassify = (params) => {
   return API.fetchPost('/courses/addAndEditClassify', params)
 }
 
+// 删除分类（树形结构）
+export const deleteClassify = (params) => {
+  return API.fetchPost('/courses/deleteClassify', params)
+}
+
 // 添加课程
 export const addAndEditCourse = (params) => {
   return API.fetchPost('/courses/addAndEditCourse', params)
