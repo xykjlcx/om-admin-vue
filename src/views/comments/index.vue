@@ -37,13 +37,16 @@
                 <img class="radius" :src="scope.row.userHeadImg" alt="" width="50%">
               </template>
             </el-table-column>
-            <el-table-column prop="userAccount" label="用户名" min-width="100" align="center">
+            <el-table-column prop="userAccount" label="用户名" min-width="80" align="center">
             </el-table-column>
             <el-table-column prop="realName" label="真实姓名" min-width="80" align="center">
             </el-table-column>
             <el-table-column prop="courseName" label="课程名称" width="120" align="center">
             </el-table-column>
-            <el-table-column prop="commentContent" label="评论内容" min-width="130" align="center">
+            <el-table-column prop="commentContent" label="评论内容" min-width="150" align="center">
+               <template slot-scope="scope">
+                 <b>{{scope.row.commentContent}}</b>
+              </template>
             </el-table-column>
             <el-table-column prop="commentBelongSection" label="评论章节" width="80" align="center">
             </el-table-column>
@@ -178,5 +181,11 @@
   .radius {
     border-radius: 50%
   }
+
+  .cell {
+    max-height: 60px !important;
+    overflow: auto !important;
+  }
+
 
 </style>
