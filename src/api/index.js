@@ -76,6 +76,16 @@ export const deleteChapterAndSection = (params) => {
   return API.fetchPost('/courses/deleteChapterAndSection', params)
 }
 
+// 获取所有评论
+export const getAllComment = (params) => {
+  return API.fetchPost('/courses/getAllComment', params)
+}
+
+// 删除一条评论
+export const deleteComment = (params) => {
+  return API.fetchPost('/courses/deleteComment', params)
+}
+
 // 获取用户列表
 export const getAllUserInfo = (params) => {
   return API.fetchPost('/user/getAllUserInfo', params)
