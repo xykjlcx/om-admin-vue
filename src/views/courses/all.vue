@@ -22,13 +22,13 @@
         <div>
           <!-- 表格操作头部 -->
           <el-row :gutter="20">
-            <el-col :span="8">
+            <el-col :span="6">
               <el-input v-model="searchContent" placeholder="请输入内容" @keyup.enter.native="searchCourse"></el-input>
             </el-col>
             <el-col :span="2">
               <el-button type="primary" @click="searchCourse">搜索</el-button>
             </el-col>
-            <el-col :span="10">
+            <el-col :span="16">
               <el-select v-model="currentOne" placeholder="请选择一级分类" class="full" @change="selectOne">
                 <el-option v-for="item in classifyOne" :key="item.id" :label="item.classifyName" :value="item.id">
                 </el-option>

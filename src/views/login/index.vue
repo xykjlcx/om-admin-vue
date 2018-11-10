@@ -26,7 +26,7 @@
         </el-button>
       </el-form-item>
       <div class="tips">
-        <span style="margin-right:20px;">账户: test</span>
+        <span style="margin-right:20px;">账户: admin</span>
         <span> 密码: 123456</span>
       </div>
     </el-form>
@@ -75,7 +75,7 @@
       }
       return {
         loginForm: {
-          account: 'test',
+          account: 'admin',
           password: ''
         },
         loginRules: {
@@ -111,6 +111,11 @@
       // $('.intro').css({
       //   'margin-top': -($('.intro').height() / 2)
       // });
+      this.$notify.info({
+        title: '提示',
+        message: '测试账号：admin 测试密码：123456',
+        position: 'top-left'
+      });
       var granimInstance = new Granim({
         element: '#canvas-basic',
         name: 'basic-gradient',
@@ -120,9 +125,9 @@
         states: {
           "default-state": {
             gradients: [
-              ['#AA076B', '#61045F'],
-              ['#02AAB0', '#00CDAC'],
-              ['#DA22FF', '#9733EE']
+              ['#ABDCFF', '#0396FF'],
+              ['#81FFEF', '#F067B4'],
+              ['#FFF6B7', '#F6416C']
             ]
           }
         }

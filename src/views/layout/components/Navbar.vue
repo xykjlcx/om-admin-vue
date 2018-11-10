@@ -70,7 +70,7 @@
             path: '/login'
           })
           }else {
-             this.$message({
+            this.$message({
             message: '退出登录失败',
             type: 'error'
           })
