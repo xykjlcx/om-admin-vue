@@ -1,36 +1,36 @@
 <template>
   <div class="app-container">
-    <el-row :gutter="100" class="panel-group" type="flex" justify="space-around">
-      <el-col :span="8" :xs="12" :sm="12" :lg="8" class="card-panel-col">
-        <div class="card-panel" @click="handleSetLineChartData('newVisitis')">
+    <el-row :gutter="50" class="panel-group" type="flex" justify="space-around">
+       <el-col :span="8" class="card-panel-col">
+        <div class="card-panel" @click="handleSetLineChartData('purchases')">
           <div class="card-panel-icon-wrapper icon-people">
             <svg-icon icon-class="peoples" class-name="card-panel-icon" />
           </div>
           <div class="card-panel-description">
-            <div class="card-panel-text">学生总数</div>
-            <span class="home-label-font">8686</span>
+            <div class="card-panel-text">平台用户总数</div>
+            <span style="font-size:20px">{{ userCount }} 人</span>
           </div>
         </div>
       </el-col>
-      <el-col :span="8" :xs="12" :sm="12" :lg="8" class="card-panel-col">
-        <div class="card-panel" @click="handleSetLineChartData('messages')">
-          <div class="card-panel-icon-wrapper icon-message">
+       <el-col :span="8" class="card-panel-col">
+        <div class="card-panel" @click="handleSetLineChartData('purchases')">
+          <div class="card-panel-icon-wrapper icon-money">
             <svg-icon icon-class="message" class-name="card-panel-icon" />
           </div>
           <div class="card-panel-description">
-            <div class="card-panel-text">最受欢迎的课程</div>
-            <span style="font-size:20px">Spring入门</span>
+            <div class="card-panel-text">学生最多学习课程</div>
+            <span style="font-size:20px">{{ bestCourse }}</span>
           </div>
         </div>
       </el-col>
-      <el-col :span="8" :xs="12" :sm="12" :lg="8" class="card-panel-col">
+      <el-col :span="8" class="card-panel-col">
         <div class="card-panel" @click="handleSetLineChartData('purchases')">
           <div class="card-panel-icon-wrapper icon-money">
             <svg-icon icon-class="money" class-name="card-panel-icon" />
           </div>
           <div class="card-panel-description">
             <div class="card-panel-text">最新评论</div>
-            <span style="font-size:20px">老师很用心</span>
+            <span style="font-size:20px">{{ bestNewComment }}</span>
           </div>
         </div>
       </el-col>
@@ -54,11 +54,20 @@
 
 <script>
   import $ from 'jquery'
+  import {getHomeData} from '@/api/index'
 
 
   export default {
     mounted() {
       this.drawChart();
+      this.fetchHomeData();
+    },
+    data () {
+      return {
+        userCount: '',
+        bestCourse: '',
+        bestNewComment:''
+      }
     },
     methods: {
       handleSetLineChartData(type) {
@@ -299,6 +308,20 @@
         };
         // 绘制图表
         myChart.setOption(option);
+      },
+      fetchHomeData() {
+        getHomeData().then(resp => {
+          if(resp.code == 0){
+            // update ui
+             this.userCount = resp.data.userCount;
+             this.bestCourse = resp.data.bestCourse;
+             this.bestNewComment = resp.data.bestNewComment;
+          }else {
+            this.userCount = '---';
+             this.bestCourse = '就不告诉你';
+             this.bestNewComment = '---';
+          }
+        })
       }
     }
   }
@@ -378,7 +401,7 @@
       .card-panel-description {
         float: right;
         font-weight: bold;
-        margin: 26px;
+        margin: 20px;
         margin-left: 0px;
 
         .card-panel-text {

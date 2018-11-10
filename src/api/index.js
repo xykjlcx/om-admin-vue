@@ -1,5 +1,10 @@
 import API from './public'
 
+// 获取课程分类
+export const getHomeData = (params) => {
+  return API.fetchGet('/home/getHomeData', params)
+}
+
 // 获取课程列表
 export const getAllCourse = (params) => {
   return API.fetchPost('/courses/getAllCourses', params)
