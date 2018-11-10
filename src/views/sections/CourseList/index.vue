@@ -17,8 +17,7 @@
     <!-- 表格体 -->
     <!-- 课程列表 -->
     <el-table class="margin_top" :data="courseData" style="width: 100%" row-style="height:100px" v-loading="tableLoading"
-      @sort-change="sortChange" :default-sort="{prop: 'createCourseTime', order: 'descending'}"
-      @row-click="courseItemClick">
+      @sort-change="sortChange" :default-sort="{prop: 'createCourseTime', order: 'descending'}" @row-click="courseItemClick">
       <el-table-column prop="id" label="序号" width="80" align="center">
       </el-table-column>
       <el-table-column prop="imgUrl" label="图片" width="200" align="center">
@@ -98,7 +97,8 @@
         }
         getAllCourse(params).then(resp => {
           this.tableLoading = false;
-          this.courseData = resp.data.courseList
+          this.courseData = resp.data.courseList;
+          this.pagination.total = resp.data.count;
         });
       },
       /**

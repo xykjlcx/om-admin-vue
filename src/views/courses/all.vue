@@ -28,14 +28,15 @@
             <el-col :span="2">
               <el-button type="primary" @click="searchCourse">搜索</el-button>
             </el-col>
-            <el-col :span="8">
-              <el-select v-model="form.region" placeholder="请选择一级分类">
-                <el-option label="前端" value="shanghai"></el-option>
-                <el-option label="后端" value="beijing"></el-option>
+            <el-col :span="10">
+              <el-select v-model="currentOne" placeholder="请选择一级分类" class="full" @change="selectOne">
+                <el-option v-for="item in classifyOne" :key="item.id" :label="item.classifyName" :value="item.id">
+                </el-option>
               </el-select>
-              <el-select v-model="form.region" placeholder="请选择二级分类">
-                <el-option label="HTML/CSS" value="shanghai"></el-option>
-                <el-option label="Vue.js" value="beijing"></el-option>
+              <el-select v-model="currentTwo" placeholder="请选择二级分类" class="full" @change="selectTwo">
+                <el-option v-for="item in classifyTwoEcType[currentOne-1]" :key="item.id" :label="item.classifyName"
+                  :value="item.id">
+                </el-option>
               </el-select>
             </el-col>
           </el-row>
@@ -127,7 +128,8 @@
     searchCourses,
     operateCourseIsBanner,
     operateCourseIsPutAway,
-    deleteCourseItem
+    deleteCourseItem,
+    getAllClassify
   } from '@/api/index'
 
 
@@ -158,6 +160,16 @@
         sortProp: 'createCourseTime',
         searchContent: '',
         courseListData: [],
+        classifyOne: [],
+        currentOne: '',
+        classifyTwo: [
+          []
+        ],
+        classifyTwoEcType: [
+          []
+        ],
+        currentTwo: '',
+        selectClassifyDbId: 0,
       }
     },
     methods: {
@@ -200,20 +212,30 @@
           this.fetchCourses();
         }
       },
+      /**
+       * 获取所有课程
+       */
       fetchCourses() {
         this.loading = true;
         // 默认以数据库id字段倒序排序
         var params = {
           page: this.currentPage - 1,
           size: 5,
-          classify: 0,
+          classify: this.selectClassifyDbId,
           sort: this.sort,
           sortProp: this.sortProp
         }
         getAllCourse(params).then(resp => {
           this.loading = false;
-          this.total = resp.data.count;
-          this.courseListData = resp.data.courseList;
+          if (resp.code == 0) {
+            this.total = resp.data.count;
+            this.courseListData = resp.data.courseList;
+          } else {
+            this.$message({
+              type: 'error',
+              message: '没有该分类下的课程'
+            });
+          }
         })
       },
       handleEdit(index, rowData) {
@@ -312,10 +334,55 @@
         this.dialogTitle = row.courseName;
         this.dialogVidelUrl = row.videoUrl;
         this.dialogVisible = true;
+      },
+      /**
+       * 获取分类数据
+       */
+      fetchAllClassify() {
+        getAllClassify().then(resp => {
+          this.classifyOne = resp.data.oneLevel
+          this.classifyTwo = resp.data.twoLevel
+          this.classifyTwoEcType = resp.data.twoLevel.concat();
+          for (var i = 0; i < this.classifyTwoEcType.length; i++) {
+            this.classifyTwoEcType[i].unshift({
+              classifyName: '所有',
+              id: 0
+            })
+          };
+          if (this.isEdit) {
+            this.handleRenderUiClassify();
+          }
+        })
+      },
+      /**
+       * 选择一级分类
+       */
+      selectOne(val) {
+        // 选中一级分类后，默认二级分类为所有
+        this.currentTwo = 0;
+        this.selectClassifyDbId = this.classifyOne[this.currentOne - 1].dbId;
+        // alert("一级：" + this.currentOne + "，二级：" + this.currentTwo + "，请求的dbId:" + this.selectClassifyDbId);
+        this.currentPage = 1;
+        this.fetchCourses();
+      },
+      /**
+       * 选择二级分类
+       */
+      selectTwo(val) {
+        if (this.currentTwo == 0) {
+          this.selectClassifyDbId = this.classifyOne[this.currentOne - 1].dbId;
+          this.fetchCourses();
+          return;
+        }
+        this.selectClassifyDbId = this.classifyTwo[this.currentOne - 1][this.currentTwo].dbId;
+        // alert("一级：" + this.currentOne + "，二级：" + this.currentTwo)
+        this.currentPage = 1;
+        this.fetchCourses();
       }
     },
     mounted() {
-      this.fetchCourses()
+      this.fetchCourses();
+      this.fetchAllClassify();
     }
   };
 

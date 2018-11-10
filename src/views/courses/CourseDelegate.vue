@@ -268,6 +268,9 @@
           this.$message.error('图片上传失败');
         }
       },
+      /**
+       * 获取分类数据
+       */
       fetchAllClassify() {
         getAllClassify().then(resp => {
           this.classifyOne = resp.data.oneLevel
