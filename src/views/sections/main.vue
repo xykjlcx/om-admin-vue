@@ -79,7 +79,7 @@
           <!-- 上传课程视频 -->
           <el-form-item label="课程视频" v-if="sectionForm.type == 'section' ? true : false">
             <!-- 视频上传 -->
-            <el-upload action="http://139.199.212.202:8086/admin/main/upload" :on-success="uploadVideoSuccess" name="file"
+            <el-upload action="https://www.oceanmooc.com:8086/api/admin/main/upload" :on-success="uploadVideoSuccess" name="file"
               class="full-width" v-if="sectionForm.type == 'section' ? true : false">
               <video class="full-width" v-if="sectionForm.videoUrl" :src="this.sectionForm.videoUrl" width="250"></video>
               <el-button plain class="full-width">视频上传</el-button>
