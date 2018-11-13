@@ -34,7 +34,7 @@
             </el-table-column>
             <el-table-column prop="userHeadImg" label="用户头像" min-width="60" align="center">
               <template slot-scope="scope">
-                <img class="radius" :src="scope.row.userHeadImg" alt="" width="50%">
+                <img class="comment-radius" :src="scope.row.userHeadImg" alt="" width="50%">
               </template>
             </el-table-column>
             <el-table-column prop="userAccount" label="用户名" min-width="80" align="center">
@@ -178,7 +178,7 @@
     margin-top: 20px;
   }
 
-  .radius {
+  .comment-radius {
     border-radius: 50%
   }
 

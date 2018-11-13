@@ -49,7 +49,7 @@
             <el-table-column prop="courseName" label="课程名称" min-width="100px" align="center">
               <template slot-scope="scope">
                 <p><a><b @click="rowClick(scope.$index,scope.row)">{{ scope.row.courseName}}</b></a></p>
-                <p class="tips_text">点击课程名称播放视频</p>
+                <!-- <p class="tips_text">点击课程名称播放视频</p> -->
               </template>
             </el-table-column>
             <el-table-column prop="imgUrl" label="图片" width="200" align="center">

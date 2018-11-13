@@ -27,7 +27,7 @@
             <!-- 上传课程图片 -->
             <el-form-item label="课程图片">
               <!-- 视频图上传 -->
-              <el-upload class="upload-demo" action="http://127.0.0.1:8086/admin/main/upload" :on-success="uploadImgSuccess"
+              <el-upload class="upload-demo" action="https://139.199.212.202:8888/admin/main/upload" :on-success="uploadImgSuccess"
                 name="file">
                 <img v-if="form.previewImg" :src="this.form.previewImg" width="100">
                 <el-button plain>图片上传</el-button>
@@ -37,7 +37,7 @@
             <!-- 上传课程视频 -->
             <el-form-item label="课程视频">
               <!-- 视频上传 -->
-              <el-upload class="upload-demo" action="http://127.0.0.1:8086/admin/main/upload" :on-success="uploadVideoSuccess"
+              <el-upload class="upload-demo" action="https://139.199.212.202:8888/admin/main/upload" :on-success="uploadVideoSuccess"
                 name="file">
                 <video v-if="form.videoUrl" :src="this.form.videoUrl" width="250"></video>
                 <el-button plain>视频上传</el-button>
