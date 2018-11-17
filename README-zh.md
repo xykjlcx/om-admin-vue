@@ -53,3 +53,8 @@
 - 商用请联系作者授权。
 
 ### 点滴支持，将是我不解的动力
+![image](https://raw.githubusercontent.com/xykjlcx/om-admin-vue/master/readme-img/pay-ali.jpg)
+
+---
+
+![image](https://raw.githubusercontent.com/xykjlcx/om-admin-vue/master/readme-img/pay-weixin.png)
