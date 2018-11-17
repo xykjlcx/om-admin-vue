@@ -27,7 +27,7 @@
 
 ## 项目架构
 
-![image](http://oceanbucket.oss-cn-beijing.aliyuncs.com/web%E7%AB%AF%E6%9E%B6%E6%9E%84.png)
+![项目架构](https://raw.githubusercontent.com/xykjlcx/om-admin-vue/master/readme-img/web%E7%AB%AF%E6%9E%B6%E6%9E%84.png)
 
 
 ## 运行效果图
