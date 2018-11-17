@@ -14,7 +14,7 @@
 
 ## 功能概览
 
-![image](http://note.youdao.com/yws/res/2053/WEBRESOURCE2d965799a966085494e4e6b09806aeaf)
+![image](http://oceanbucket.oss-cn-beijing.aliyuncs.com/%E5%8A%9F%E8%83%BD%E6%80%A7%E9%9C%80%E6%B1%82.png)
 
 ## 技术栈
 
@@ -27,17 +27,17 @@
 
 ## 项目架构
 
-![image](http://note.youdao.com/yws/res/2051/86B595D0DA1344FDB04B7659BBF9271E)
+![image](http://oceanbucket.oss-cn-beijing.aliyuncs.com/web%E7%AB%AF%E6%9E%B6%E6%9E%84.png)
 
 
 ## 运行效果图
-![image](http://note.youdao.com/yws/res/2065/WEBRESOURCEcda51a1e992e6ee3fa17da4e3d938258)
-![image](http://note.youdao.com/yws/res/2067/WEBRESOURCE8efb3e3157f924bfa7bcd4ac9aaaa29c)
-![image](http://note.youdao.com/yws/res/2070/WEBRESOURCEc71ab1ee621e5bc0718bd8238541483e)
-![image](http://note.youdao.com/yws/res/2071/WEBRESOURCEd1773601748cfc07970b08004782fd46)
+![image](http://oceanbucket.oss-cn-beijing.aliyuncs.com/%E6%95%88%E6%9E%9C%E5%9B%BE3.png)
+![image](http://oceanbucket.oss-cn-beijing.aliyuncs.com/%E6%95%88%E6%9E%9C%E5%9B%BE2.png)
+![image](http://oceanbucket.oss-cn-beijing.aliyuncs.com/%E6%95%88%E6%9E%9C%E5%9B%BE1.png)
+![image](http://oceanbucket.oss-cn-beijing.aliyuncs.com/%E6%95%88%E6%9E%9C%E5%9B%BE4.png)
 
 ## 未来
 
 > 整个项目，从服务端、到Web端和Android端，包括作者整理、撰写论文，差不多一共用了一个半月。所以项目有很多不成熟的地方，代码写的也不够优雅，在2.0版本中，我们会解决这些问题，并新增一些功能。
 
-![image](https://note.youdao.com/src/WEBRESOURCE717f51cd59e8dd157df655ac38d7e688)
+![image](http://oceanbucket.oss-cn-beijing.aliyuncs.com/%E9%A1%B9%E7%9B%AE%E8%AE%A1%E5%88%92%20%282%29.png)
